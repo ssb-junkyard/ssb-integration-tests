@@ -16,14 +16,16 @@ var paramap = require('pull-paramap')
       toPull.source(process.stdin),
       JSONDL.parse(),
       //write to sbot, wether it supports createWriteStream or not
-      sbot.createWriteStream
-      ? sbot.createWriteStream(done)
-      : pull(paramap(function (e, cb) {
+      paramap(function (e, cb) {
           sbot.add(e, cb)
-        }, 128), pull.drain(null, done))
+        }, 128),
+      pull.drain(null, done)
       )
   })
 })()
+
+
+
 
 
 
