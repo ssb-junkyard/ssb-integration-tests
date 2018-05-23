@@ -10,7 +10,7 @@ running as processes, so these tests should be usable even for other implementat
 clone this, then run
 
 ```
-./scripts/install.sh install # install all sbot version >= 10
+./scripts/install.sh install_all # install all sbot version >= 10
 ./test/01_load.sh path_to_test_sbot versions/*/bin
 ```
 
