@@ -19,6 +19,7 @@ function createFeeds (n) {
 }
 
 function network (peers, n) {
+  var roots = []
   var state = v.initial()
   var time = +new Date('2018-05-23T00:33:05.480Z')
   for(var i = 0; i < peers.length; i++) {
@@ -28,11 +29,21 @@ function network (peers, n) {
       type: 'contact', contact: peer.id,
       following: true
     }, time+=1000)
+    state = v.appendNew(state, null, peer, {
+      type: 'contact', contact: _peer.id,
+      following: true
+    }, time+=1000)
     for(var j = 0; j < peers.length/n; j++) {
       state = v.appendNew(state, null, peer, {
         type: 'test', date: 'hello world:' + hash(j).toString('base64'),
+        root:
+          mt.random() < 0.3 ? undefined : roots[~~(mt.random()*roots.length)],
         value: j
       }, time+=1000)
+
+      var msg = state.queue[state.queue.length - 1]
+      if(!msg.content.root)
+        roots.push(state.feeds[msg.author].id)
     }
   }
   return state
@@ -41,4 +52,6 @@ function network (peers, n) {
 network(createFeeds(1000), 100).queue.forEach(function (e) {
   console.log(JSON.stringify(e, null, 2)+'\n')
 })
+
+
 

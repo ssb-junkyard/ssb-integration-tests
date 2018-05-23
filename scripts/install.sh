@@ -1,11 +1,11 @@
 #! /bin/bash
 
 list () {
-  npm show scuttlebot-release --json | node parse.js versions
+  npm show scuttlebot-release --json | node parse.js versions | grep -v -e '^9\.'
 }
 
 install () {
-  for version in `list`; do
+  for version in `cat versions.txt`; do
     echo install $version
     mkdir -p versions/$version/node_modules
     pushd versions/$version
