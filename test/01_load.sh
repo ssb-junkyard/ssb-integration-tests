@@ -28,6 +28,8 @@ ssb_appname=test_$appname node write.js < ./tmp/input.json
 
 output () {
   server_wait
+  client version
+  client whoami > ./tmp/whoami$1.json
   client createLogStream --no-keys > ./tmp/output$1.json
   client friends.hops --hops 100 | node cannonical.js > ./tmp/hops$1.json
   client links --dest '@' > ./tmp/links$1.json
@@ -65,6 +67,7 @@ do
     echo
     echo
 
+    assert_files_equal ./tmp/whoami2.json ./tmp/whoami1.json whoami
     assert_files_equal ./tmp/output2.json ./tmp/input.json createWriteStream
     assert_files_equal ./tmp/hops2.json ./tmp/hops1.json friends.hops
     assert_files_equal ./tmp/links2.json ./tmp/links1.json links
@@ -77,4 +80,3 @@ do
 
   fi
 done
-
