@@ -22,7 +22,7 @@ function network (peers, n) {
   var state = v.initial()
   var time = +new Date('2018-05-23T00:33:05.480Z')
   for(var i = 0; i < peers.length; i++) {
-    var _peer = peers[~~(mt.random()*i)]
+    var _peer = peers[~~(Math.pow(mt.random(), 2)*i)]
     var peer = peers[i]
     state = v.appendNew(state, null, _peer, {
       type: 'contact', contact: peer.id,
@@ -38,5 +38,7 @@ function network (peers, n) {
   return state
 }
 
-console.log(JSON.stringify(network(createFeeds(1000), 100).queue, null, 2))
+network(createFeeds(1000), 100).queue.forEach(function (e) {
+  console.log(JSON.stringify(e, null, 2)+'\n')
+})
 
