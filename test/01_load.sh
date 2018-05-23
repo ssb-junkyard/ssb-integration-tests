@@ -32,6 +32,7 @@ output () {
   client friends.hops --hops 100 | node cannonical.js > ./tmp/hops$1.json
   client links --dest '@' > ./tmp/links$1.json
   client links --dest '%' > ./tmp/links_msg$1.json
+  client latest > ./tmp/latest$1.json
 }
 
 output 1
@@ -56,11 +57,6 @@ do
     cmd="$cmd2"
     echo "testing:" $cmd
     server
-#    time server_wait #sometimes it chooses to rebuild indexes
-#    client createLogStream --no-keys > ./tmp/output2.json
-#    client friends.hops --hops 100 | node cannonical.js > ./tmp/hops2.json
-#    client links --dest '@' > ./tmp/links2.json
-#    client links --dest '%' > ./tmp/links_msg2.json
 
     output 2
 
@@ -69,10 +65,11 @@ do
     echo
     echo
 
-    assert_files_equal ./tmp/output2.json ./tmp/input.json 'output2.json equals input.json'
-    assert_files_equal ./tmp/hops2.json ./tmp/hops1.json 'hops2.json equals hops1.json'
-    assert_files_equal ./tmp/links2.json ./tmp/links1.json 'links2.json equals links1.json'
-    assert_files_equal ./tmp/links_msg2.json ./tmp/links_msg1.json 'links_msg2.json equals links_msg1.json'
+    assert_files_equal ./tmp/output2.json ./tmp/input.json createWriteStream
+    assert_files_equal ./tmp/hops2.json ./tmp/hops1.json friends.hops
+    assert_files_equal ./tmp/links2.json ./tmp/links1.json links
+    assert_files_equal ./tmp/links_msg2.json ./tmp/links_msg1.json links_msg
+    assert_files_equal ./tmp/latest2.json ./tmp/latest1.json latest
 
     echo
     echo ---
